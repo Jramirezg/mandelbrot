@@ -1,16 +1,18 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/spf13/viper"
 	"log"
 )
 
 type Config struct {
-	Width    int `mapstructure:"width"`
-	Height   int `mapstructure:"height"`
-	MaxIter  int `mapstructure:"maxIter"`
-	Contrast int `mapstructure:"contrast"`
+	Width         int  `mapstructure:"width"`
+	Height        int  `mapstructure:"height"`
+	MaxIter       int  `mapstructure:"maxIter"`
+	Contrast      int  `mapstructure:"contrast"`
+	UseCharacters bool `mapstructure:"useCharacters"`
 }
 
 var config Config
@@ -30,6 +32,10 @@ func init() {
 	if err := viper.Unmarshal(&config); err != nil {
 		log.Fatalf("Error unmarshalling configuration: %v", err)
 	}
+
+	// Parse command-line flags
+	flag.BoolVar(&config.UseCharacters, "useCharacters", false, "Use characters instead of dots")
+	flag.Parse()
 }
 
 func mandelbrot(c complex64) int {
@@ -51,14 +57,32 @@ func drawMandelbrot() {
 
 			c := complex(realPart, imagPart)
 			value := mandelbrot(c)
-			if value == config.MaxIter {
-				fmt.Print(" ")
+
+			var drawChar string
+			if config.UseCharacters {
+				drawChar = getCharacter(value)
 			} else {
-				fmt.Print(string(48 + value%config.Contrast))
+				if value == config.MaxIter {
+					drawChar = " "
+				} else {
+					drawChar = "."
+				}
 			}
+
+			fmt.Print(drawChar)
 		}
 		fmt.Println()
 	}
+}
+
+func getCharacter(iterations int) string {
+	// Adjust the characters based on the number of iterations
+	characters := " .:-=+*%@#MW"
+	if iterations == config.MaxIter {
+		return " "
+	}
+	charIndex := iterations % len(characters)
+	return string(characters[charIndex])
 }
 
 func main() {

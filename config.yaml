@@ -1,4 +1,4 @@
 width: 227
-height: 900
-maxIter: 30
+height: 100
+maxIter: 300000
 contrast: 15
