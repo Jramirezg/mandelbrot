@@ -1,0 +1,46 @@
+# Binaries and executable files
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.bin
+*.o
+*.a
+
+# Test binaries
+*_test
+
+# Output of the go coverage tool
+*.cover
+
+# Profile output
+*.out
+
+# Dependency directories (remove the comment if you want to ignore them)
+# vendor/
+
+# Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
+.glide/
+
+# Various IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS specific files
+.DS_Store
+
+# Output of the go build command
+/bin/
+/pkg/
+
+# Go build cache
+$GOPATH/pkg/
+
+# GoLand IDE
+.goland*/
+
+# Go test binaries
+*_test.go
